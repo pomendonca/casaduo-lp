@@ -868,6 +868,10 @@
       .pricing-card { padding: 32px 24px; }
       .compare-grid { grid-template-columns: 1fr 1fr; }
       footer { padding: 48px 20px 32px; }
+      .footer-top { flex-direction: column; align-items: center; text-align: center; gap: 32px; margin-bottom: 32px; padding-bottom: 32px; }
+      .footer-brand p { max-width: 100%; }
+      .footer-links-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; width: 100%; }
+      .footer-bottom { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
       .step:not(:last-child)::after { display: none; }
     }
   </style>
@@ -1514,27 +1518,29 @@
           </div>
           <p>Divida contas sem drama. Feito com ♥ no Brasil.</p>
         </div>
-        <div class="footer-links">
-          <h4>Produto</h4>
-          <ul>
-            <li><a href="#features">Funcionalidades</a></li>
-            <li><a href="#como-funciona">Como funciona</a></li>
-            <li><a href="#precos">Preços</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="/privacidade">Privacidade</a></li>
-            <li><a href="/termos">Termos de uso</a></li>
-            <li><a href="/lgpd">LGPD</a></li>
-          </ul>
-        </div>
-        <div class="footer-links">
-          <h4>Suporte</h4>
-          <ul>
-            <li><a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
-          </ul>
+        <div class="footer-links-grid">
+          <div class="footer-links">
+            <h4>Produto</h4>
+            <ul>
+              <li><a href="#features">Funcionalidades</a></li>
+              <li><a href="#como-funciona">Como funciona</a></li>
+              <li><a href="#precos">Preços</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Legal</h4>
+            <ul>
+              <li><a href="/privacidade">Privacidade</a></li>
+              <li><a href="/termos">Termos de uso</a></li>
+              <li><a href="/lgpd">LGPD</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Suporte</h4>
+            <ul>
+              <li><a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
