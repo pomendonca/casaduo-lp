@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CasaDuo — Divida contas. Sem dor de cabeça</title>
+  <meta name="description" content="Organize despesas compartilhadas entre casal, amigos ou roommates. Sem planilhas. Sem conversa chata." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* === Cores exatas do produto (globals.css) === */
+      --primary: #2D6A4F;
+      --primary-hover: #245A42;
+      --primary-light: #52B788;
+      --primary-muted: #D8EFDF;
+      --warning: #F4A261;
+      --warning-muted: #FDE8D0;
+      --success: #52B788;
+      --success-muted: #D8EFDF;
+      --destructive: #E76F51;
+      --background: #FAFAF8;
+      --surface: #FFFFFF;
+      --surface-subtle: #F4F4F0;
+      --foreground: #1A1A2E;
+      --muted-foreground: #6B7280;
+      --subtle-foreground: #9CA3AF;
+      --border: #E8E8E4;
+      --border-strong: #D1D1C8;
+
+      /* Aliases para compatibilidade com a landing page */
+      --green-900: #1a3d2b;
+      --green-800: #2D6A4F;
+      --green-700: #3a8a62;
+      --green-600: #52B788;
+      --green-200: #D8EFDF;
+      --green-100: #D8EFDF;
+      --green-50:  #D8EFDF;
+      --sand-100: #F4F4F0;
+      --sand-200: #E8E8E4;
+      --sand-300: #D1D1C8;
+      --text-primary: #1A1A2E;
+      --text-secondary: #6B7280;
+      --text-muted: #9CA3AF;
+      --white: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      color: var(--foreground);
+      background: var(--background);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* — NAV ——————————————————————————————————— */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(47,110,79,0.1);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    .nav-logo-text {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--green-800); }
+
+    .nav-cta {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .btn-ghost {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      color: var(--text-secondary);
+      background: none; border: none;
+      cursor: pointer; padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover { background: var(--sand-100); color: var(--text-primary); }
+
+    .btn-primary {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      color: var(--white);
+      background: var(--green-800);
+      border: none; cursor: pointer;
+      padding: 9px 20px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* — HERO ————————————————————————————————— */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 64px;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(47,110,79,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-50);
+      border: 1px solid var(--green-200);
+      color: var(--green-800);
+      font-size: 13px; font-weight: 500;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px;
+      background: var(--green-600);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -1.5px;
+      color: var(--text-primary);
+      max-width: 800px;
+      margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--green-800);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text-secondary);
+      max-width: 500px;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex; align-items: center; gap: 16px;
+      flex-wrap: wrap; justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .hero-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 52px;
+    }
+
+    .btn-hero {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 600;
+      color: var(--white);
+      background: var(--green-800);
+      border: none; cursor: pointer;
+      padding: 16px 36px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 8px 24px rgba(47,110,79,0.18);
+    }
+    .btn-hero:hover { background: var(--green-700); transform: translateY(-2px); }
+
+    .btn-hero-outline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 400;
+      color: var(--text-secondary);
+      background: none;
+      border: 1px solid var(--sand-300);
+      cursor: pointer;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-hero-outline:hover { border-color: var(--green-200); color: var(--text-primary); }
+
+    /* — APP MOCKUP ————————————————————————— */
+    .hero-mockup {
+      width: 100%; max-width: 960px;
+      background: var(--sand-100);
+      border: 1px solid var(--sand-200);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(47,110,79,0.12), 0 2px 8px rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    .mockup-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--sand-200);
+      padding: 14px 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .mockup-dots { display: flex; gap: 6px; }
+    .mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mockup-dot:nth-child(1) { background: #ff5f57; }
+    .mockup-dot:nth-child(2) { background: #febc2e; }
+    .mockup-dot:nth-child(3) { background: #28c840; }
+    .mockup-url {
+      flex: 1;
+      background: var(--sand-100);
+      border-radius: 6px;
+      height: 26px;
+      display: flex; align-items: center;
+      padding: 0 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .mockup-content {
+      display: flex;
+      height: 540px;
+    }
+    .mockup-sidebar {
+      width: 200px;
+      background: var(--white);
+      border-right: 1px solid var(--sand-200);
+      padding: 20px 0;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar-bottom { margin-top: auto; border-top: 1px solid var(--sand-200); padding-top: 8px; }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+    .sidebar-logo-text {
+      font-family: 'DM Serif Display', serif;
+      font-weight: 400;
+      font-size: 18px;
+      color: var(--primary);
+      letter-spacing: -0.2px;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px 10px 9px;
+      font-size: 13px; font-weight: 500;
+      color: var(--muted-foreground);
+      cursor: pointer;
+      border-radius: 6px;
+      border-left: 3px solid transparent;
+      margin: 0 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-item.active {
+      background: var(--primary-muted);
+      color: var(--primary);
+      border-left-color: var(--primary);
+    }
+    .sidebar-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+    .sidebar-item.active .sidebar-icon { opacity: 1; }
+
+    /* Tipografia do app no mockup */
+    .mockup-content { font-family: 'DM Sans', sans-serif; text-align: left; }
+    .mockup-sidebar, .mockup-main { text-align: left; }
+    .mkp-display { font-family: 'DM Serif Display', serif; }
+    .mkp-mono { font-family: 'DM Mono', monospace; }
+
+    .mockup-main {
+      flex: 1;
+      padding: 24px;
+      overflow: hidden;
+      background: var(--background);
+    }
+    .mockup-header { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+    .mockup-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+    .mc-label { font-size: 10px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .mc-value { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .mc-value.orange { color: var(--warning); }
+    .mc-value.green { color: var(--green-800); }
+    .mc-meta { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+    .mockup-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .mockup-panel {
+      background: var(--white);
+      border: 1px solid var(--sand-200);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .mp-title { font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+
+    .balance-highlight {
+      border: 1.5px solid var(--green-200) !important;
+      background: linear-gradient(to bottom, var(--white), var(--green-50)) !important;
+    }
+    .balance-main {
+      font-size: 22px;
+      line-height: 1.3;
+      margin: 16px 0;
+      color: var(--text-primary);
+    }
+    .balance-main strong { color: var(--green-800); }
+    .balance-secondary { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+    .balance-tagline {
+      font-size: 11px; color: var(--green-700);
+      margin-top: 12px; padding-top: 10px;
+      border-top: 1px solid var(--sand-200);
+      text-align: center;
+    }
+
+    .upcoming-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--sand-200);
+    }
+    .upcoming-item:last-child { border-bottom: none; }
+    .upcoming-icon {
+      width: 24px; height: 24px; border-radius: 6px;
+      background: var(--sand-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .upcoming-name { font-size: 11px; font-weight: 500; color: var(--text-primary); }
+    .upcoming-date { font-size: 10px; color: var(--text-muted); }
+    .upcoming-value { margin-left: auto; font-size: 11px; font-weight: 600; }
+
+    /* — PROBLEM ————————————————————————————— */
+    .section { padding: 96px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1px; text-transform: uppercase;
+      color: var(--green-800);
+      margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 4.5vw, 52px);
+      font-weight: 400;
+      line-height: 1.12;
+      letter-spacing: -0.8px;
+      color: var(--text-primary);
+      max-width: 640px;
+      margin-bottom: 24px;
+    }
+    .section-title em { font-style: italic; color: var(--green-800); }
+    .section-desc {
+      font-size: 18px;
+      color: var(--text-secondary);
+      max-width: 620px;
+      line-height: 1.6;
+      margin-bottom: 48px;
+    }
+
+    .problem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: var(--sand-200);
+      border: 1px solid var(--sand-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .problem-card { background: var(--white); padding: 32px; }
+    .problem-icon {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      background: var(--sand-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+    .problem-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .problem-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* — FEATURES ————————————————————————————— */
+    .features-bg { background: var(--sand-100); }
+
+    .feature-block {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .feature-block:last-child { margin-bottom: 0; }
+    .feature-block.reverse { direction: rtl; }
+    .feature-block.reverse > * { direction: ltr; }
+
+    .feature-number {
+      font-family: 'Instrument Serif', serif;
+      font-size: 13px; font-weight: 400;
+      color: var(--green-700);
+      margin-bottom: 12px;
+    }
+    .feature-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .feature-desc {
+      font-size: 16px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 520px;
+    }
+    .feature-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-secondary);
+    }
+    .feature-list li::before {
+      content: '';
+      width: 16px; height: 16px;
+      background: var(--green-50);
+      border: 1.5px solid var(--green-200);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%232F6E4F' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* — FEATURE VISUAL CARDS ——————————————— */
+    .feature-visual {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 12px rgba(26,26,46,0.08);
+    }
+    .fv-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 16px;
+      font-size: 12px; font-weight: 500;
+      color: var(--muted-foreground);
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Expense list visual */
+    .expense-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .expense-item:last-child { border-bottom: none; }
+    .exp-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--primary-muted);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0; margin-top: 2px;
+    }
+    .exp-name { font-size: 13px; font-weight: 600; color: var(--foreground); line-height: 1.3; }
+    .exp-meta { font-size: 11px; color: var(--subtle-foreground); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .exp-right { margin-left: auto; text-align: right; flex-shrink: 0; }
+    .exp-value { font-size: 13px; font-weight: 600; color: var(--foreground); font-family: 'DM Mono', monospace; font-variant-numeric: tabular-nums; }
+    .exp-badge {
+      font-size: 10px; font-weight: 500;
+      padding: 2px 8px; border-radius: 100px;
+      display: inline-flex; align-items: center;
+      border: 1px solid transparent;
+      margin-top: 4px;
+    }
+    .exp-badge.pago {
+      background: var(--success-muted);
+      color: #245A42;
+      border-color: rgba(82,183,136,0.3);
+    }
+    .exp-badge.pendente {
+      background: var(--warning-muted);
+      color: #a0521a;
+      border-color: rgba(244,162,97,0.3);
+    }
+
+    /* Chat visual */
+    .chat-messages { padding: 16px 20px; display: flex; flex-direction: column; gap: 14px; }
+    .chat-row {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .chat-row.user { flex-direction: row-reverse; }
+    .chat-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-avatar.user { background: var(--primary); }
+    .chat-avatar.ai { background: var(--border); }
+    .chat-msg {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 16px;
+      font-size: 13px; line-height: 1.5;
+    }
+    .chat-msg.user {
+      background: var(--primary); color: #ffffff;
+      border-top-right-radius: 4px;
+    }
+    .chat-msg.ai {
+      background: var(--surface-subtle); color: var(--foreground);
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+    }
+    .chat-msg strong { font-weight: 600; }
+
+    /* Quick entry visual */
+    .quickentry-wrap { padding: 20px; }
+    .qe-input {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--foreground);
+      font-family: 'DM Sans', sans-serif;
+    }
+    .qe-result {
+      background: var(--primary-muted);
+      border: 1px solid rgba(45,106,79,0.2);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .qe-result-header {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 12px;
+      border-bottom: 1px solid rgba(45,106,79,0.15);
+    }
+    .qe-result-label {
+      font-size: 10px; font-weight: 700;
+      color: var(--primary);
+      text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .qe-result-body { padding: 10px 12px; }
+    .qe-field { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 5px; }
+    .qe-field:last-child { margin-bottom: 0; }
+    .qe-field-label { font-size: 11px; color: rgba(45,106,79,0.7); flex-shrink: 0; }
+    .qe-field-value { font-size: 11px; font-weight: 500; color: var(--foreground); text-align: right; }
+
+    /* — HOW IT WORKS ————————————————————————— */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      position: relative;
+    }
+    .step { padding: 40px 32px; position: relative; }
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 56px; right: 0;
+      width: 1px; height: 32px;
+      background: var(--sand-200);
+    }
+    .step-num {
+      width: 40px; height: 40px;
+      background: var(--green-800);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .step-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+    .step-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* — TESTIMONIALS ————————————————————————— */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .testimonial {
+      background: var(--white);
+      border: 1px solid var(--sand-200);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+    }
+    .test-stars { font-size: 14px; margin-bottom: 14px; color: #f59e0b; }
+    .test-text { font-size: 15px; line-height: 1.7; color: var(--text-primary); margin-bottom: 20px; font-style: italic; }
+    .test-author { display: flex; align-items: center; gap: 10px; }
+    .test-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--green-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; color: var(--green-800);
+    }
+    .test-name { font-size: 14px; font-weight: 500; }
+    .test-handle { font-size: 12px; color: var(--text-muted); }
+
+    /* — COMPARE ————————————————————————————— */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--sand-200);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-top: 40px;
+    }
+    .compare-header,
+    .compare-item {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--sand-200);
+    }
+    .compare-header { font-weight: 600; background: var(--sand-100); font-size: 14px; }
+    .compare-header.active { background: var(--green-50); color: var(--green-800); }
+    .compare-item { font-size: 14px; color: var(--text-secondary); }
+    .compare-item.active { color: var(--green-800); font-weight: 500; }
+    .compare-item:last-child,
+    .compare-header:last-child { border-bottom: none; }
+
+    /* — PRICING ————————————————————————————— */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 900px;
+      margin: 48px auto 0;
+    }
+    .pricing-card {
+      background: var(--white);
+      border: 1.5px solid var(--sand-200);
+      border-radius: var(--radius-xl);
+      padding: 40px;
+      text-align: center;
+    }
+    .pricing-card.featured {
+      border-color: var(--green-800);
+      position: relative;
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: var(--green-50);
+      color: var(--green-800);
+      font-size: 12px; font-weight: 600;
+      padding: 4px 14px; border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .pricing-badge.highlight {
+      background: var(--green-800);
+      color: var(--white);
+    }
+    .pricing-price {
+      font-family: 'Instrument Serif', serif;
+      font-size: 56px; font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .pricing-price-alt {
+      font-family: 'Instrument Serif', serif;
+      font-size: 32px; font-weight: 400;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pricing-period { font-size: 13px; color: var(--text-muted); margin-bottom: 28px; }
+    .pricing-yearly { font-size: 13px; color: var(--green-700); font-weight: 500; margin-bottom: 28px; }
+    .pricing-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 32px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .pricing-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 14px; color: var(--text-secondary);
+    }
+    .pricing-check {
+      width: 18px; height: 18px;
+      background: var(--green-800);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px; color: var(--white);
+    }
+    .pricing-check.muted {
+      background: var(--sand-200);
+    }
+
+    /* — CTA ——————————————————————————————————— */
+    .cta-section {
+      background: var(--green-800);
+      padding: 96px 24px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.12;
+      letter-spacing: -0.8px;
+      margin-bottom: 16px;
+    }
+    .cta-section h2 em { font-style: italic; opacity: 0.75; }
+    .cta-section p { font-size: 18px; color: rgba(255,255,255,0.7); margin-bottom: 40px; }
+    .btn-white {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px; font-weight: 500;
+      color: var(--green-800);
+      background: var(--white);
+      border: none; cursor: pointer;
+      padding: 14px 32px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+    .btn-white:hover { opacity: 0.92; transform: translateY(-2px); }
+    .cta-note { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 16px; }
+
+    /* — FOOTER ————————————————————————————— */
+    footer {
+      background: var(--text-primary);
+      padding: 60px 40px 40px;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 40px; flex-wrap: wrap;
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer-brand .nav-logo-text { color: var(--white); font-size: 20px; }
+    .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 10px; max-width: 240px; line-height: 1.6; }
+    .footer-links h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 16px; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.8); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 13px; }
+
+    /* — MOCKUP DASHBOARD LAYOUT ——————————— */
+    .mockup-header-row {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .mockup-nav-btns { display: flex; gap: 4px; align-items: center; }
+    .mockup-nav-btn {
+      height: 22px; padding: 0 8px; min-width: 22px;
+      border: 1px solid var(--sand-200); border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: var(--text-muted);
+    }
+    .mockup-saldo { margin-bottom: 12px; }
+    .mhb-label {
+      font-size: 9px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 8px;
+    }
+    .mhb-row { display: flex; align-items: center; justify-content: space-between; }
+    .mhb-amount {
+      font-size: 20px; font-weight: 700; color: var(--warning);
+      font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .mhb-sub { font-size: 11px; color: var(--text-secondary); margin-top: 3px; }
+    .mhb-btn {
+      font-size: 10px; font-weight: 500; color: var(--text-secondary);
+      border: 1px solid var(--sand-200); border-radius: 6px; padding: 4px 10px;
+      white-space: nowrap;
+    }
+    .narrative-headline {
+      font-size: 12px; font-weight: 600; line-height: 1.3; margin-bottom: 2px;
+    }
+    .narrative-sub { font-size: 10px; color: var(--text-muted); }
+    .narrative-divider { height: 1px; background: var(--sand-200); margin: 10px 0; }
+
+    .mockup-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--sand-200);
+      margin-bottom: 12px;
+    }
+    .mdc-label { font-size: 9px; color: var(--text-muted); line-height: 1.3; text-transform: uppercase; letter-spacing: 0.4px; }
+    .mdc-name { font-size: 12px; font-weight: 600; color: var(--text-primary); }
+    .mti-icons { display: flex; align-items: center; gap: 6px; }
+    .mti-bell { color: var(--text-muted); display: flex; align-items: center; }
+    .mti-avatar { width: 22px; height: 22px; border-radius: 50%; background: var(--green-200); }
+    .mockup-panel + .mockup-panel,
+    .mockup-row + .mockup-panel { margin-top: 10px; }
+
+    /* — ANIMATIONS ————————————————————————— */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-badge { animation: fadeUp 0.5s ease both; }
+    .hero h1 { animation: fadeUp 0.5s 0.1s ease both; }
+    .hero-sub { animation: fadeUp 0.5s 0.2s ease both; }
+    .hero-actions { animation: fadeUp 0.5s 0.3s ease both; }
+    .hero-note { animation: fadeUp 0.5s 0.35s ease both; }
+    .hero-mockup { animation: fadeUp 0.6s 0.4s ease both; }
+
+    /* — RESPONSIVE ————————————————————————— */
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .section { padding: 64px 20px; }
+      .feature-block { grid-template-columns: 1fr; gap: 32px; }
+      .feature-block.reverse { direction: ltr; }
+      .mockup-sidebar { display: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .pricing-card { padding: 32px 24px; }
+      .compare-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 48px 20px 32px; }
+      .step:not(:last-child)::after { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="64" rx="14" fill="#2D6A4F"/>
+        <path d="M14 32 C22 14, 42 14, 50 32 C42 50, 22 50, 14 32" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+        <circle cx="14" cy="32" r="3" fill="white"/>
+        <circle cx="50" cy="32" r="3" fill="white"/>
+      </svg>
+      <span class="nav-logo-text">CasaDuo</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#features">Funcionalidades</a></li>
+      <li><a href="#como-funciona">Como funciona</a></li>
+      <li><a href="#precos">Preços</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://app.casaduo.app/login" class="btn-ghost">Entrar</a>
+      <a href="https://app.casaduo.app/register" class="btn-primary">Criar meu Duo →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Para casais, amigos e grupos
+    </div>
+
+    <h1>Divida contas.<br /><em>Sem dor de cabeça.</em></h1>
+
+    <p class="hero-sub">
+      Organize despesas compartilhadas entre casal, amigos ou roommates. Sem planilhas. Sem conversa chata.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://app.casaduo.app/register" class="btn-hero">
+        Criar meu Duo
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#como-funciona" class="btn-hero-outline">Ver demonstração</a>
+    </div>
+
+    <p class="hero-note">Leva menos de 1 minuto.</p>
+
+    <!-- App mockup -->
+    <div class="hero-mockup">
+      <div class="mockup-bar">
+        <div class="mockup-dots">
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+          <div class="mockup-dot"></div>
+        </div>
+        <div class="mockup-url">app.casaduo.app/dashboard</div>
+      </div>
+      <div class="mockup-content">
+        <!-- Sidebar -->
+        <div class="mockup-sidebar">
+          <div class="sidebar-logo">
+            <svg width="22" height="22" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#2D6A4F"/><path d="M14 32 C22 14, 42 14, 50 32 C42 50, 22 50, 14 32" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="14" cy="32" r="3" fill="white"/><circle cx="50" cy="32" r="3" fill="white"/></svg>
+            <span class="sidebar-logo-text">CasaDuo</span>
+          </div>
+          <!-- Dashboard: Lucide LayoutDashboard -->
+          <div class="sidebar-item active">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+            Dashboard
+          </div>
+          <!-- Despesas: Lucide Receipt -->
+          <div class="sidebar-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8H8"/><path d="M16 12H8"/><path d="M12 16H8"/></svg>
+            Despesas
+          </div>
+          <!-- Cartão: Lucide CreditCard -->
+          <div class="sidebar-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+            Cartão
+          </div>
+          <!-- Relatórios: Lucide BarChart3 -->
+          <div class="sidebar-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+            Relatórios
+          </div>
+          <!-- Radar: Lucide Bot -->
+          <div class="sidebar-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+            Radar
+          </div>
+          <div class="sidebar-bottom">
+            <!-- Sair: Lucide LogOut -->
+            <div class="sidebar-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+              Sair
+            </div>
+          </div>
+        </div>
+
+        <!-- Main area -->
+        <div class="mockup-main" style="position:relative; overflow:hidden; padding:0;">
+
+          <!-- Top app bar -->
+          <div style="padding:10px 20px; background:var(--surface); border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+            <div>
+              <div style="font-size:9px; color:var(--subtle-foreground); letter-spacing:0.3px;">Duo</div>
+              <div style="font-size:13px; font-weight:600; color:var(--foreground);">🏠 Apartamento 10</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div style="color:var(--subtle-foreground); display:flex; align-items:center;">
+                <!-- Lucide Bell -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+              </div>
+              <div style="width:26px; height:26px; border-radius:50%; background:var(--primary-muted); border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center;">
+                <span style="font-size:10px; font-weight:600; color:var(--primary);">P</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Área de conteúdo com padding -->
+          <div style="padding:20px 20px 0;">
+
+            <!-- Título da página + navegação de mês -->
+            <div style="display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:16px;">
+              <div>
+                <div class="mkp-display" style="font-size:18px; font-weight:400; color:var(--foreground); line-height:1.2; letter-spacing:-0.2px;">Como estamos esse mês</div>
+                <div style="font-size:12px; color:var(--subtle-foreground); margin-top:3px; font-weight:400;">Maio 2026</div>
+              </div>
+              <div style="display:flex; gap:4px; align-items:center; margin-top:2px;">
+                <div style="height:26px; width:26px; border:1px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--muted-foreground); background:var(--surface);">
+                  <svg width="6" height="11" viewBox="0 0 6 11" fill="none"><path d="M5 1L1 5.5L5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div style="height:26px; padding:0 12px; border:1px solid var(--border); border-radius:6px; display:flex; align-items:center; font-size:11px; font-weight:500; color:var(--foreground); background:var(--surface);">Hoje</div>
+                <div style="height:26px; width:26px; border:1px solid var(--border); border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--muted-foreground); background:var(--surface);">
+                  <svg width="6" height="11" viewBox="0 0 6 11" fill="none"><path d="M1 1l4 4.5L1 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Saldo entre vocês -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:8px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div style="display:flex; align-items:flex-start; gap:10px;">
+                <div style="color:var(--primary); flex-shrink:0; padding-top:2px;">
+                  <!-- Lucide ArrowDownLeft -->
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 7-10 10M7 7v10h10"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--muted-foreground); margin-bottom:4px;">Saldo entre vocês</div>
+                  <div class="mkp-mono" style="font-size:22px; font-weight:700; color:var(--primary); line-height:1.1; font-variant-numeric:tabular-nums;">R$ 50,00</div>
+                  <div style="font-size:11px; color:var(--muted-foreground); margin-top:3px;">Ana deve para você</div>
+                  <div style="font-size:10px; color:var(--subtle-foreground); margin-top:2px;">Último pagamento: hoje</div>
+                </div>
+              </div>
+              <div style="font-size:10px; font-weight:500; color:var(--foreground); border:1px solid var(--border); border-radius:6px; padding:5px 10px; white-space:nowrap; display:flex; align-items:center; gap:4px; flex-shrink:0; margin-top:4px; background:var(--surface);">
+                <!-- Lucide Handshake aproximado -->
+                <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M10 4L7 7l1 1 3-3M6 7l-1 1 2 2 1-1M4 9l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 12l4-4M10 4l4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Acertar agora
+              </div>
+            </div>
+
+            <!-- Este mês + Próxima conta -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+              <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;">
+                <div style="font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--warning); margin-bottom:5px; display:flex; align-items:center; gap:4px;">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M2 13L14 3M14 3H7M14 3v7" stroke="#F4A261" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Este mês
+                </div>
+                <div style="font-size:12px; font-weight:600; color:var(--foreground); margin-bottom:3px; line-height:1.3;">Pagamentos pendentes este mês</div>
+                <div class="mkp-mono" style="font-size:10px; color:var(--muted-foreground); line-height:1.5;">Você: R$ 1.913,97 · Ana: R$ 1.913,94</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;">
+                <div style="font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--subtle-foreground); margin-bottom:5px; display:flex; align-items:center; gap:4px;">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                  Próxima conta
+                </div>
+                <div style="font-size:12px; font-weight:600; color:var(--foreground); margin-bottom:3px;">Aluguel Apartamento</div>
+                <div class="mkp-mono" style="font-size:10px; color:var(--warning);">R$ 2.800,00 · Vence em 2 dias</div>
+              </div>
+            </div>
+
+            <!-- Fatura aberta — Cartão compartilhado -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:8px; display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+              <div>
+                <div style="font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:var(--subtle-foreground); margin-bottom:4px;">Fatura aberta — Cartão compartilhado</div>
+                <div class="mkp-mono" style="font-size:18px; font-weight:600; color:var(--foreground); line-height:1.1; margin-bottom:3px; font-variant-numeric:tabular-nums;">R$ 912,77</div>
+                <div style="font-size:10px; color:var(--subtle-foreground);">5 cobranças · fecha dia 27 · vence 5 de junho de 2026</div>
+              </div>
+              <div style="color:var(--subtle-foreground); flex-shrink:0; margin-top:2px;">
+                <!-- Lucide CreditCard -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+            </div>
+
+            <!-- Reembolsos Pendentes -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:8px;">
+              <div style="font-size:13px; font-weight:600; color:var(--foreground); margin-bottom:10px;">Reembolsos Pendentes</div>
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:7px;">
+                <div style="font-size:10px; font-weight:600; color:var(--primary); display:flex; align-items:center; gap:3px;">
+                  <!-- ArrowDownLeft mini -->
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m17 7-10 10M7 7v10h10"/></svg>
+                  TE DEVEM
+                </div>
+                <div class="mkp-mono" style="font-size:11px; font-weight:600; color:var(--primary); font-variant-numeric:tabular-nums;">R$ 50,00</div>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="font-size:11px; color:var(--foreground);">Empréstimo utensílio</div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <div class="mkp-mono" style="font-size:11px; font-weight:500; color:var(--foreground); font-variant-numeric:tabular-nums;">R$ 50,00</div>
+                  <div style="font-size:9px; background:var(--surface-subtle); color:var(--subtle-foreground); padding:2px 7px; border-radius:4px; border:1px solid var(--border);">hoje</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vence nos próximos 7 dias -->
+            <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:14px 16px;">
+              <div style="font-size:13px; font-weight:600; color:var(--foreground); margin-bottom:10px;">Vence nos próximos 7 dias</div>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:32px; height:32px; border-radius:50%; background:var(--primary-muted); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0;">🏠</div>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-size:12px; font-weight:500; color:var(--foreground);">Aluguel Apartamento</div>
+                  <div style="font-size:10px; color:var(--subtle-foreground); margin-top:1px;">13/05/2026</div>
+                </div>
+                <div style="text-align:right; flex-shrink:0;">
+                  <div class="mkp-mono" style="font-size:12px; font-weight:500; color:var(--foreground); font-variant-numeric:tabular-nums;">R$ 2.800,00</div>
+                  <div style="font-size:9px; border:1px solid var(--border); color:var(--subtle-foreground); background:var(--surface-subtle); padding:2px 8px; border-radius:4px; display:inline-block; margin-top:2px;">A vencer</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- fim área de conteúdo -->
+
+          <!-- Fade gradiente no rodapé -->
+          <div style="position:absolute; bottom:0; left:0; right:0; height:60px; background:linear-gradient(to bottom, transparent, var(--background)); pointer-events:none;"></div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="section" id="problema">
+    <div class="section-inner">
+      <div class="section-label">O problema</div>
+      <h2 class="section-title">Dividir contas não deveria ser <em>complicado.</em></h2>
+      <p class="section-desc">
+        Planilhas desatualizadas, cobranças desconfortáveis e ninguém sabendo exatamente quem pagou o quê. No fim, organizar despesas compartilhadas acaba virando desgaste.
+      </p>
+
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">📊</div>
+          <div class="problem-title">Planilhas que ninguém atualiza</div>
+          <div class="problem-desc">Uma semana de atraso e a planilha já não reflete a realidade. Quem atualiza? Ninguém quer essa responsabilidade.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🤔</div>
+          <div class="problem-title">"Quem pagou o quê?"</div>
+          <div class="problem-desc">Sem histórico claro, a divisão das contas vira conversa incômoda. Às vezes, discussão mesmo.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📅</div>
+          <div class="problem-title">Vencimentos perdidos</div>
+          <div class="problem-desc">Conta de luz, boleto do condomínio, fatura do cartão. Sem visão centralizada, sempre tem algo passando da data.</div>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🫥</div>
+          <div class="problem-title">Sem visão dos gastos juntos</div>
+          <div class="problem-desc">Quanto vocês gastam por mês de verdade? Em qual categoria? Comparado a meses anteriores? Ninguém sabe.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section features-bg" id="features">
+    <div class="section-inner">
+      <div class="section-label">Funcionalidades</div>
+      <h2 class="section-title">Tudo que você precisa, <em>num só lugar</em></h2>
+
+      <!-- Feature 1: Quick Entry (primeiro por conversão) -->
+      <div class="feature-block" style="margin-top: 56px;">
+        <div>
+          <div class="feature-number">01 — Quick Entry</div>
+          <h3 class="feature-title">Registre gastos do jeito que você fala</h3>
+          <p class="feature-desc">
+            Digite "gastei 150 no iFood agora" e o CasaDuo cria a despesa automaticamente — com categoria, divisão e data corretas. Até pelo WhatsApp funciona.
+          </p>
+          <ul class="feature-list">
+            <li>Criação por texto livre, sem formulário</li>
+            <li>Entende divisão: "é minha toda", "pago pela Ana"</li>
+            <li>Integração com WhatsApp para registro no momento</li>
+            <li>Edita e deleta via linguagem natural também</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="fv-header">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Quick Entry — IA
+          </div>
+          <div class="quickentry-wrap">
+            <!-- Suggestion pills -->
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
+              <span style="font-size:11px; padding:5px 10px; border-radius:100px; background:var(--surface-subtle); border:1px solid var(--border); color:var(--muted-foreground);">Gastei 50 no iFood agora</span>
+              <span style="font-size:11px; padding:5px 10px; border-radius:100px; background:var(--surface-subtle); border:1px solid var(--border); color:var(--muted-foreground);">Academia 89, é minha</span>
+            </div>
+            <!-- Input + send -->
+            <div style="display:flex; align-items:flex-end; gap:8px; margin-bottom:12px;">
+              <div class="qe-input" style="flex:1; margin-bottom:0;">Academia 89 mensal, é minha</div>
+              <div style="width:36px; height:36px; border-radius:10px; background:var(--primary); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 8h10M8 4l4 4-4 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <!-- Result card -->
+            <div class="qe-result">
+              <div class="qe-result-header">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#2D6A4F" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#2D6A4F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="qe-result-label">Despesa criada</span>
+              </div>
+              <div class="qe-result-body">
+                <div class="qe-field">
+                  <span class="qe-field-label">Nome</span>
+                  <span class="qe-field-value">Academia</span>
+                </div>
+                <div class="qe-field">
+                  <span class="qe-field-label">Valor</span>
+                  <span class="qe-field-value" style="font-family:'DM Mono',monospace;">R$ 89,00</span>
+                </div>
+                <div class="qe-field">
+                  <span class="qe-field-label">Categoria</span>
+                  <span class="qe-field-value">📱 Assinaturas</span>
+                </div>
+                <div class="qe-field">
+                  <span class="qe-field-label">Recorrência</span>
+                  <span class="qe-field-value">Mensal</span>
+                </div>
+                <div class="qe-field">
+                  <span class="qe-field-label">Divisão</span>
+                  <span class="qe-field-value">100% para você</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 2: Despesas (alternado) -->
+      <div class="feature-block reverse" style="margin-top: 64px;">
+        <div>
+          <div class="feature-number">02 — Despesas</div>
+          <h3 class="feature-title">Cadastre qualquer gasto em segundos</h3>
+          <p class="feature-desc">
+            Aluguel, mercado, iFood ou Shopee — tudo num lugar só. Com categorias pré-definidas e divisão automática, registrar um gasto leva menos de 30 segundos.
+          </p>
+          <ul class="feature-list">
+            <li>Divisão 50/50 ou personalizada por despesa</li>
+            <li>Categorias pré-definidas</li>
+            <li>Despesas recorrentes geradas automaticamente</li>
+            <li>Histórico completo com busca e filtros</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="fv-header">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 8h6M5 5.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Despesas — Maio 2026
+          </div>
+          <div class="expense-item">
+            <div class="exp-icon">🏠</div>
+            <div style="flex:1; min-width:0;">
+              <div class="exp-name">Aluguel Apartamento</div>
+              <div class="exp-meta"><span>01/05/2026</span><span>·</span><span>Moradia</span><span>·</span><span>Mensal</span></div>
+            </div>
+            <div class="exp-right">
+              <div class="exp-value">R$ 2.800,00</div>
+              <span class="exp-badge pendente">Pendente</span>
+            </div>
+          </div>
+          <div class="expense-item">
+            <div class="exp-icon">🥦</div>
+            <div style="flex:1; min-width:0;">
+              <div class="exp-name">Feira da semana</div>
+              <div class="exp-meta"><span>03/05/2026</span><span>·</span><span>Alimentação</span></div>
+            </div>
+            <div class="exp-right">
+              <div class="exp-value">R$ 247,50</div>
+              <span class="exp-badge pago">Pago</span>
+            </div>
+          </div>
+          <div class="expense-item">
+            <div class="exp-icon">🛵</div>
+            <div style="flex:1; min-width:0;">
+              <div class="exp-name">iFood — Quinta-feira</div>
+              <div class="exp-meta"><span>04/05/2026</span><span>·</span><span>Delivery</span></div>
+            </div>
+            <div class="exp-right">
+              <div class="exp-value">R$ 89,90</div>
+              <span class="exp-badge pago">Pago</span>
+            </div>
+          </div>
+          <div class="expense-item">
+            <div class="exp-icon">📦</div>
+            <div style="flex:1; min-width:0;">
+              <div class="exp-name">Itens Casa</div>
+              <div class="exp-meta"><span>01/05/2026</span><span>·</span><span>Marketplace</span></div>
+            </div>
+            <div class="exp-right">
+              <div class="exp-value">R$ 200,00</div>
+              <span class="exp-badge pago">Pago</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature 3: Insights automáticos (era IA Chat) -->
+      <div class="feature-block" style="margin-top: 64px;">
+        <div>
+          <div class="feature-number">03 — Insights automáticos</div>
+          <h3 class="feature-title">Entenda seus gastos sem abrir planilhas</h3>
+          <p class="feature-desc">
+            Veja padrões, categorias que cresceram e despesas fora do normal automaticamente. Sem precisar analisar números manualmente.
+          </p>
+          <ul class="feature-list">
+            <li>Análise dos últimos 3 meses de histórico</li>
+            <li>Comparativos entre meses automáticos</li>
+            <li>Detecção de anomalias em despesas recorrentes</li>
+            <li>Pergunte qualquer coisa em linguagem natural</li>
+          </ul>
+        </div>
+        <div class="feature-visual">
+          <div class="fv-header">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 10.5C2 12.433 3.567 14 5.5 14H12a2 2 0 002-2V5.5A3.5 3.5 0 0010.5 2h-5A3.5 3.5 0 002 5.5v5z" stroke="currentColor" stroke-width="1.4"/><path d="M6 7h4M6 10h2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            Radar
+          </div>
+          <div class="chat-messages">
+            <div class="chat-row user">
+              <div class="chat-avatar user">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="white" stroke-width="1.4"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div class="chat-msg user">Quanto gastamos em delivery em abril?</div>
+            </div>
+            <div class="chat-row ai">
+              <div class="chat-avatar ai">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="2" stroke="#2D6A4F" stroke-width="1.4"/><path d="M5 5V3.5a3 3 0 016 0V5" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round"/><circle cx="6" cy="9" r="1" fill="#2D6A4F"/><circle cx="10" cy="9" r="1" fill="#2D6A4F"/></svg>
+              </div>
+              <div class="chat-msg ai">Em abril vocês gastaram <strong>R$ 312,40</strong> com delivery — 3 pedidos no iFood e 2 no 99Food. Isso representa <strong>6,8%</strong> do total do mês, um pouco acima de março (R$ 198).</div>
+            </div>
+            <div class="chat-row user">
+              <div class="chat-avatar user">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="white" stroke-width="1.4"/><path d="M2 14c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div class="chat-msg user">Qual categoria mais cresceu nos últimos 3 meses?</div>
+            </div>
+            <div class="chat-row ai">
+              <div class="chat-avatar ai">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="8" rx="2" stroke="#2D6A4F" stroke-width="1.4"/><path d="M5 5V3.5a3 3 0 016 0V5" stroke="#2D6A4F" stroke-width="1.4" stroke-linecap="round"/><circle cx="6" cy="9" r="1" fill="#2D6A4F"/><circle cx="10" cy="9" r="1" fill="#2D6A4F"/></svg>
+              </div>
+              <div class="chat-msg ai"><strong>Marketplace</strong> foi a que mais cresceu: de R$ 150 em fevereiro para R$ 580 em abril — alta de 287%. Shopee concentra a maior parte dessas compras.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section" id="como-funciona">
+    <div class="section-inner">
+      <div class="section-label">Como funciona</div>
+      <h2 class="section-title">Do zero ao <em>controle total</em> em minutos</h2>
+
+      <div class="steps" style="border: 1px solid var(--sand-200); border-radius: var(--radius-lg); margin-top: 48px; overflow: hidden;">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Crie o grupo</div>
+          <div class="step-desc">Cadastre-se, nomeie o Duo (ex: "Apartamento 10" ou "Banana República") e defina a divisão padrão — 50/50 ou personalizada.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Convide as pessoas</div>
+          <div class="step-desc">Compartilhe o link de convite. Em segundos todos estão no mesmo grupo, com acesso igual a tudo.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Cadastre despesas</div>
+          <div class="step-desc">Por formulário, digitando texto livre ou enviando mensagem no WhatsApp. Sempre menos de 30 segundos.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-title">Acompanhe juntos</div>
+          <div class="step-desc">Dashboard em tempo real mostrando quem deve o quê. Pergunte qualquer coisa ao Radar.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section features-bg">
+    <div class="section-inner">
+      <div class="section-label">Depoimentos</div>
+      <h2 class="section-title">O que as pessoas <em>estão dizendo</em></h2>
+
+      <div class="testimonials-grid" style="margin-top: 48px;">
+        <div class="testimonial">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-text">"A gente tinha uma planilha horrível que ninguém atualizava direito. Com o CasaDuo, em uma semana já sabíamos quanto gastávamos de verdade. A IA então é outra categoria."</p>
+          <div class="test-author">
+            <div class="test-avatar">MR</div>
+            <div>
+              <div class="test-name">Marina & Rafael</div>
+              <div class="test-handle">São Paulo, SP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-text">"O quick entry pelo WhatsApp mudou tudo. Saí do mercado, mandei uma mensagem e o gasto já estava no app. Zero fricção, zero desculpa pra não registrar."</p>
+          <div class="test-author">
+            <div class="test-avatar">CL</div>
+            <div>
+              <div class="test-name">Camila & Lucas</div>
+              <div class="test-handle">Campinas, SP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-text">"Usamos na república e eliminou completamente o caos do acerto de contas todo mês. Cada um sabe exatamente o que deve sem precisar perguntar."</p>
+          <div class="test-author">
+            <div class="test-avatar">TF</div>
+            <div>
+              <div class="test-name">Thiago & Felipe</div>
+              <div class="test-handle">Rio de Janeiro, RJ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Por que usar CasaDuo</div>
+      <h2 class="section-title">Mais simples que uma <em>planilha</em></h2>
+
+      <div class="compare-grid">
+        <div class="compare-header">Planilha</div>
+        <div class="compare-header active">CasaDuo</div>
+
+        <div class="compare-item">Atualização manual</div>
+        <div class="compare-item active">Tudo sincronizado</div>
+
+        <div class="compare-item">Precisa calcular</div>
+        <div class="compare-item active">Divisão automática</div>
+
+        <div class="compare-item">Sem lembretes</div>
+        <div class="compare-item active">Alertas automáticos</div>
+
+        <div class="compare-item">Confuso no celular</div>
+        <div class="compare-item active">Feito pro dia a dia</div>
+
+        <div class="compare-item" style="border-bottom: none;">Cobrança desconfortável</div>
+        <div class="compare-item active" style="border-bottom: none;">Tudo transparente</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="section features-bg" id="precos">
+    <div class="section-inner" style="text-align: center;">
+      <div class="section-label">Preços</div>
+      <h2 class="section-title" style="margin: 0 auto 16px;">Simples para qualquer <em>Duo</em></h2>
+      <p style="font-size: 18px; color: var(--text-secondary); margin-bottom: 0;">Comece de graça. Evolua quando precisar.</p>
+
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="pricing-badge">Gratuito</div>
+          <div class="pricing-price">R$&thinsp;0</div>
+          <div class="pricing-period">para sempre · sem cartão de crédito</div>
+
+          <ul class="pricing-features">
+            <li><div class="pricing-check">✓</div>Despesas ilimitadas</li>
+            <li><div class="pricing-check">✓</div>Dashboard e balanço mensal</li>
+            <li><div class="pricing-check">✓</div>Histórico dos últimos 3 meses</li>
+            <li><div class="pricing-check">✓</div>5 mensagens de IA por mês</li>
+            <li><div class="pricing-check">✓</div>Quick Entry por texto</li>
+          </ul>
+
+          <a href="https://app.casaduo.app/register" class="btn-hero" style="width: 100%; justify-content: center; background: var(--text-secondary); box-shadow: none;">
+            Começar grátis
+          </a>
+        </div>
+
+        <!-- Premium -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge highlight">Premium</div>
+          <div class="pricing-price-alt">R$&thinsp;14,90<span style="font-size: 18px; font-family: 'DM Sans', sans-serif; color: var(--text-muted);">/mês</span></div>
+          <div class="pricing-yearly">ou R$ 119/ano — 2 meses grátis</div>
+
+          <ul class="pricing-features">
+            <li><div class="pricing-check">✓</div>Tudo do plano gratuito</li>
+            <li><div class="pricing-check">✓</div>Histórico completo (sem limite)</li>
+            <li><div class="pricing-check">✓</div>20 mensagens de IA por hora</li>
+            <li><div class="pricing-check">✓</div>Quick Entry + WhatsApp</li>
+            <li><div class="pricing-check">✓</div>Alertas por WhatsApp e e-mail</li>
+            <li><div class="pricing-check">✓</div>Export CSV e PDF</li>
+            <li><div class="pricing-check">✓</div>Insights automáticos mensais</li>
+          </ul>
+
+          <a href="https://app.casaduo.app/register" class="btn-hero" style="width: 100%; justify-content: center;">
+            Começar com Premium
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Pronto para parar de se preocupar<br /><em>com quem pagou o quê?</em></h2>
+    <p>Crie um Duo em menos de 1 minuto.</p>
+    <a href="https://app.casaduo.app/register" class="btn-white">
+      Criar meu Duo
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="cta-note">Gratuito para começar · Sem cartão de crédito</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom: 12px;">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#2D6A4F"/><path d="M14 32 C22 14, 42 14, 50 32 C42 50, 22 50, 14 32" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="14" cy="32" r="3" fill="white"/><circle cx="50" cy="32" r="3" fill="white"/></svg>
+            <span class="nav-logo-text">CasaDuo</span>
+          </div>
+          <p>Divida contas sem drama. Feito com ♥ no Brasil.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Produto</h4>
+          <ul>
+            <li><a href="#features">Funcionalidades</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#precos">Preços</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/privacidade">Privacidade</a></li>
+            <li><a href="/termos">Termos de uso</a></li>
+            <li><a href="/lgpd">LGPD</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 CasaDuo. Todos os direitos reservados.</span>
+        <a href="https://app.casaduo.app" style="font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none;">Acessar o app →</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
