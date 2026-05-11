@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LGPD — CasaDuo</title>
+  <meta name="description" content="Saiba como o CasaDuo cumpre a Lei Geral de Proteção de Dados (Lei 13.709/2018) e como exercer seus direitos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #2D6A4F;
+      --primary-hover: #245A42;
+      --primary-light: #52B788;
+      --primary-muted: #D8EFDF;
+      --background: #FAFAF8;
+      --foreground: #1A1A2E;
+      --border: #E8E8E4;
+      --green-800: #2D6A4F;
+      --green-700: #3a8a62;
+      --sand-100: #F4F4F0;
+      --text-primary: #1A1A2E;
+      --text-secondary: #6B7280;
+      --text-muted: #9CA3AF;
+      --white: #ffffff;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; font-weight: 400; color: var(--foreground); background: var(--background); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 64px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(47,110,79,0.1); }
+    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo-text { font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 18px; color: var(--text-primary); letter-spacing: -0.3px; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 14px; font-weight: 400; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--green-800); }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+    .btn-ghost { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--text-secondary); background: none; border: none; cursor: pointer; padding: 8px 16px; border-radius: var(--radius-sm); text-decoration: none; transition: background 0.2s, color 0.2s; }
+    .btn-ghost:hover { background: var(--sand-100); color: var(--text-primary); }
+    .btn-primary { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; color: var(--white); background: var(--green-800); border: none; cursor: pointer; padding: 9px 20px; border-radius: var(--radius-sm); text-decoration: none; transition: background 0.2s, transform 0.15s; }
+    .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); }
+
+    .legal-wrap { max-width: 760px; margin: 0 auto; padding: 120px 24px 80px; }
+    .legal-label { font-size: 13px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--primary); margin-bottom: 16px; }
+    .legal-title { font-family: 'Instrument Serif', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 400; line-height: 1.1; letter-spacing: -1px; color: var(--text-primary); margin-bottom: 12px; }
+    .legal-updated { font-size: 14px; color: var(--text-muted); margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid var(--border); }
+    .legal-section { margin-bottom: 40px; }
+    .legal-section h2 { font-family: 'DM Sans', sans-serif; font-size: 20px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
+    .legal-section p { font-size: 16px; color: var(--text-secondary); margin-bottom: 12px; }
+    .legal-section ul { padding-left: 20px; margin-bottom: 12px; }
+    .legal-section ul li { font-size: 16px; color: var(--text-secondary); margin-bottom: 6px; }
+    .legal-section a { color: var(--primary); text-decoration: none; }
+    .legal-section a:hover { text-decoration: underline; }
+    .legal-highlight { background: var(--primary-muted); border-left: 3px solid var(--primary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 16px 20px; margin-bottom: 12px; font-size: 15px; color: var(--text-secondary); }
+
+    .rights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .rights-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+    .rights-card h3 { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+    .rights-card p { font-size: 14px; color: var(--text-secondary); margin: 0; }
+
+    footer { background: var(--text-primary); padding: 60px 40px 40px; color: rgba(255,255,255,0.5); }
+    .footer-inner { max-width: 1100px; margin: 0 auto; }
+    .footer-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .footer-brand .nav-logo-text { color: var(--white); font-size: 20px; }
+    .footer-brand p { font-size: 14px; color: rgba(255,255,255,0.4); margin-top: 10px; max-width: 240px; line-height: 1.6; }
+    .footer-links h4 { font-size: 12px; font-weight: 600; letter-spacing: 0.5px; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-bottom: 16px; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { font-size: 14px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
+    .footer-links a:hover { color: rgba(255,255,255,0.8); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    .footer-copy { font-size: 13px; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      footer { padding: 48px 20px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#2D6A4F"/><path d="M14 32 C22 14, 42 14, 50 32 C42 50, 22 50, 14 32" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="14" cy="32" r="3" fill="white"/><circle cx="50" cy="32" r="3" fill="white"/></svg>
+      <span class="nav-logo-text">CasaDuo</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#features">Funcionalidades</a></li>
+      <li><a href="/#como-funciona">Como funciona</a></li>
+      <li><a href="/#precos">Preços</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://app.casaduo.app/login" class="btn-ghost">Entrar</a>
+      <a href="https://app.casaduo.app/register" class="btn-primary">Criar meu Duo →</a>
+    </div>
+  </nav>
+
+  <main class="legal-wrap">
+    <div class="legal-label">Legal</div>
+    <h1 class="legal-title">LGPD &amp; seus direitos</h1>
+    <p class="legal-updated">Última atualização: 11 de maio de 2026</p>
+
+    <div class="legal-section">
+      <p>A Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD) garante a você direitos sobre seus dados pessoais. Esta página explica como o CasaDuo aplica a LGPD e como você pode exercer esses direitos de forma simples.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Controlador de dados</h2>
+      <p>O controlador dos seus dados pessoais é:</p>
+      <ul>
+        <li><strong>Nome:</strong> Pedro Pierro Salgado de Mendonça (pessoa física)</li>
+        <li><strong>Localização:</strong> Campinas/SP, Brasil</li>
+        <li><strong>Contato:</strong> <a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>Bases legais para tratamento</h2>
+      <p>Tratamos seus dados com as seguintes bases legais previstas na LGPD:</p>
+      <ul>
+        <li><strong>Execução de contrato (art. 7º, V):</strong> dados necessários para fornecer o serviço contratado (ex.: e-mail, despesas registradas).</li>
+        <li><strong>Legítimo interesse (art. 7º, IX):</strong> logs de segurança e prevenção a fraudes.</li>
+        <li><strong>Consentimento (art. 7º, I):</strong> envio de alertas por WhatsApp e comunicações de marketing, quando você opt-in.</li>
+        <li><strong>Cumprimento de obrigação legal (art. 7º, II):</strong> retenção de dados exigida por lei.</li>
+      </ul>
+    </div>
+
+    <div class="legal-section">
+      <h2>Seus direitos pela LGPD</h2>
+      <p>Como titular dos dados, você tem os seguintes direitos (art. 18, LGPD):</p>
+
+      <div class="rights-grid">
+        <div class="rights-card">
+          <h3>Confirmação e acesso</h3>
+          <p>Confirmar se tratamos seus dados e acessar uma cópia deles.</p>
+        </div>
+        <div class="rights-card">
+          <h3>Correção</h3>
+          <p>Corrigir dados incompletos, inexatos ou desatualizados.</p>
+        </div>
+        <div class="rights-card">
+          <h3>Eliminação</h3>
+          <p>Solicitar a exclusão de dados tratados com base no seu consentimento.</p>
+        </div>
+        <div class="rights-card">
+          <h3>Portabilidade</h3>
+          <p>Receber seus dados em formato estruturado para transferência a outro serviço.</p>
+        </div>
+        <div class="rights-card">
+          <h3>Revogação de consentimento</h3>
+          <p>Retirar seu consentimento a qualquer momento, sem custo.</p>
+        </div>
+        <div class="rights-card">
+          <h3>Oposição ao tratamento</h3>
+          <p>Opor-se ao tratamento realizado com base em legítimo interesse.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="legal-section">
+      <h2>Como exercer seus direitos</h2>
+      <div class="legal-highlight">Envie um e-mail para <a href="mailto:oi@casaduo.app">oi@casaduo.app</a> com o assunto "Direitos LGPD" e descreva o que você solicita. Responderemos em até 15 dias úteis.</div>
+      <p>Para solicitações de exclusão total de conta, o prazo é de 30 dias. Alguns dados podem ser retidos por prazo maior quando exigido por obrigação legal (ex.: registros fiscais).</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Transferência internacional de dados</h2>
+      <p>Utilizamos provedores de infraestrutura que podem processar dados em servidores fora do Brasil (ex.: provedores de nuvem com sede nos EUA). Nesses casos, exigimos que os parceiros adotem salvaguardas adequadas, como cláusulas contratuais padrão compatíveis com a LGPD.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Reclamações à ANPD</h2>
+      <p>Se você acreditar que seus direitos não foram atendidos adequadamente, pode registrar uma reclamação junto à Autoridade Nacional de Proteção de Dados (ANPD) em <a href="https://www.gov.br/anpd" target="_blank" rel="noopener noreferrer">gov.br/anpd</a>.</p>
+    </div>
+
+    <div class="legal-section">
+      <h2>Mais informações</h2>
+      <p>Consulte também nossa <a href="/privacidade">Política de Privacidade</a> para detalhes completos sobre os dados que coletamos e como os utilizamos.</p>
+      <p>Dúvidas: <a href="mailto:oi@casaduo.app">oi@casaduo.app</a></p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom: 12px;">
+            <svg width="28" height="28" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="14" fill="#2D6A4F"/><path d="M14 32 C22 14, 42 14, 50 32 C42 50, 22 50, 14 32" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/><circle cx="14" cy="32" r="3" fill="white"/><circle cx="50" cy="32" r="3" fill="white"/></svg>
+            <span class="nav-logo-text">CasaDuo</span>
+          </div>
+          <p>Divida contas sem drama. Feito com ♥ no Brasil.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Produto</h4>
+          <ul>
+            <li><a href="/#features">Funcionalidades</a></li>
+            <li><a href="/#como-funciona">Como funciona</a></li>
+            <li><a href="/#precos">Preços</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/privacidade">Privacidade</a></li>
+            <li><a href="/termos">Termos de uso</a></li>
+            <li><a href="/lgpd">LGPD</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Suporte</h4>
+          <ul>
+            <li><a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 CasaDuo. Todos os direitos reservados.</span>
+        <a href="https://app.casaduo.app" style="font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none;">Acessar o app →</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
