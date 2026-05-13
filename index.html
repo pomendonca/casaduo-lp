@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CasaDuo — Divida contas. Sem dor de cabeça</title>
-  <meta name="description" content="Organize despesas compartilhadas entre casal, amigos ou roommates. Sem planilhas. Sem conversa chata." />
+  <title>CasaDuo — Divida contas com quem você quiser. Sem drama.</title>
+  <meta name="description" content="Gerencie as finanças compartilhadas de quem você convive — casal, amigos que moram juntos ou república. Com o Radar, nossa IA, tudo fica claro. Sem planilha. Sem discussão." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -875,6 +875,7 @@
       .footer-links-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; width: 100%; }
       .footer-bottom { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
       .step:not(:last-child)::after { display: none; }
+      .use-cases-grid { grid-template-columns: 1fr !important; }
     }
   </style>
 </head>
@@ -908,13 +909,13 @@
 
     <div class="hero-badge">
       <span class="hero-badge-dot"></span>
-      Para casais, amigos e grupos
+      Casal · Amigos que moram juntos · República
     </div>
 
-    <h1>Divida contas.<br /><em>Sem dor de cabeça.</em></h1>
+    <h1>Gerencie as finanças<br /><em>de quem você convive.</em></h1>
 
     <p class="hero-sub">
-      Organize despesas compartilhadas entre casal, amigos ou roommates. Sem planilhas. Sem conversa chata.
+      Casal, amigos ou república — o CasaDuo organiza as despesas de quem divide o mesmo espaço. Com o Radar, nossa IA. Sem planilha. Sem conversa chata.
     </p>
 
     <div class="hero-actions">
@@ -1118,6 +1119,33 @@
     </div>
   </section>
 
+  <!-- USO CASES -->
+  <section class="section" style="padding-top: 0; padding-bottom: 64px; background: var(--white);">
+    <div class="section-inner">
+      <div class="use-cases-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px;">
+          <div style="font-size: 28px; margin-bottom: 12px;">💑</div>
+          <div style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Casal</div>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Aluguel, mercado, contas fixas — tudo dividido automaticamente. Sem precisar ficar perguntando quem pagou o quê.</p>
+        </div>
+
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px;">
+          <div style="font-size: 28px; margin-bottom: 12px;">👯</div>
+          <div style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Amigos que moram juntos</div>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Dois ou três amigos dividindo apartamento — contas de consumo, compras do mês, assinaturas compartilhadas. Cada um sabe o que deve sem clima ruim.</p>
+        </div>
+
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px;">
+          <div style="font-size: 28px; margin-bottom: 12px;">🏠</div>
+          <div style="font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">República</div>
+          <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;">Internet, luz, gás, compras coletivas — acerto mensal sem drama com três, quatro ou mais pessoas dividindo o mesmo espaço.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- PROBLEM -->
   <section class="section" id="problema">
     <div class="section-inner">
@@ -1176,7 +1204,7 @@
         <div class="feature-visual">
           <div class="fv-header">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            Quick Entry — IA
+            Quick Entry — Radar
           </div>
           <div class="quickentry-wrap">
             <!-- Suggestion pills -->
@@ -1382,34 +1410,34 @@
       <div class="testimonials-grid" style="margin-top: 48px;">
         <div class="testimonial">
           <div class="test-stars">★★★★★</div>
-          <p class="test-text">"A gente tinha uma planilha horrível que ninguém atualizava direito. Com o CasaDuo, em uma semana já sabíamos quanto gastávamos de verdade. A IA então é outra categoria."</p>
+          <p class="test-text">"A gente tinha uma planilha horrível que ninguém atualizava direito. Com o CasaDuo, em uma semana já sabíamos exatamente quanto gastávamos juntos de verdade. O Radar então é outra categoria."</p>
           <div class="test-author">
             <div class="test-avatar">MR</div>
             <div>
               <div class="test-name">Marina & Rafael</div>
-              <div class="test-handle">São Paulo, SP</div>
+              <div class="test-handle">Casal · São Paulo, SP</div>
             </div>
           </div>
         </div>
         <div class="testimonial">
           <div class="test-stars">★★★★★</div>
-          <p class="test-text">"O quick entry pelo WhatsApp mudou tudo. Saí do mercado, mandei uma mensagem e o gasto já estava no app. Zero fricção, zero desculpa pra não registrar."</p>
+          <p class="test-text">"Eu e dois amigos dividimos apartamento há dois anos. Antes era aquele caos de quem pagou a internet, quem deve o mercado. Com o CasaDuo tudo fica registrado em tempo real e o Radar responde qualquer pergunta sobre os gastos na hora."</p>
           <div class="test-author">
-            <div class="test-avatar">CL</div>
+            <div class="test-avatar">BG</div>
             <div>
-              <div class="test-name">Camila & Lucas</div>
-              <div class="test-handle">Campinas, SP</div>
+              <div class="test-name">Bruno e flatmates</div>
+              <div class="test-handle">Amigos morando juntos · Belo Horizonte, MG</div>
             </div>
           </div>
         </div>
         <div class="testimonial">
           <div class="test-stars">★★★★★</div>
-          <p class="test-text">"Usamos na república e eliminou completamente o caos do acerto de contas todo mês. Cada um sabe exatamente o que deve sem precisar perguntar."</p>
+          <p class="test-text">"Usamos na república com 4 pessoas e eliminou completamente o caos do acerto todo mês. Cada um sabe exatamente o que deve sem precisar perguntar — e sem clima ruim entre a galera."</p>
           <div class="test-author">
             <div class="test-avatar">TF</div>
             <div>
-              <div class="test-name">Thiago & Felipe</div>
-              <div class="test-handle">Rio de Janeiro, RJ</div>
+              <div class="test-name">Thiago e república</div>
+              <div class="test-handle">República · Rio de Janeiro, RJ</div>
             </div>
           </div>
         </div>
@@ -1463,7 +1491,7 @@
             <li><div class="pricing-check">✓</div>Despesas ilimitadas</li>
             <li><div class="pricing-check">✓</div>Dashboard e balanço mensal</li>
             <li><div class="pricing-check">✓</div>Histórico dos últimos 3 meses</li>
-            <li><div class="pricing-check">✓</div>5 mensagens de IA por mês</li>
+            <li><div class="pricing-check">✓</div>5 mensagens ao Radar por mês</li>
             <li><div class="pricing-check">✓</div>Quick Entry por texto</li>
           </ul>
 
@@ -1482,7 +1510,7 @@
           <ul class="pricing-features">
             <li><div class="pricing-check">✓</div>Tudo do plano gratuito</li>
             <li><div class="pricing-check">✓</div>Histórico completo (sem limite)</li>
-            <li><div class="pricing-check">✓</div>20 mensagens de IA por hora</li>
+            <li><div class="pricing-check">✓</div>20 mensagens ao Radar por hora</li>
             <li><div class="pricing-check">✓</div>Quick Entry + WhatsApp</li>
             <li><div class="pricing-check">✓</div>Alertas por WhatsApp e e-mail</li>
             <li><div class="pricing-check">✓</div>Export CSV e PDF</li>
@@ -1501,7 +1529,7 @@
   <!-- CTA -->
   <section class="cta-section">
     <h2>Pronto para parar de se preocupar<br /><em>com quem pagou o quê?</em></h2>
-    <p>Crie um Duo em menos de 1 minuto.</p>
+    <p>Crie seu Duo em menos de 1 minuto. Casal, amigos ou república.</p>
     <a href="https://app.casaduo.app/register" class="btn-white">
       Criar meu Duo
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1541,6 +1569,13 @@
             <h4>Suporte</h4>
             <ul>
               <li><a href="mailto:oi@casaduo.app">oi@casaduo.app</a></li>
+            </ul>
+          </div>
+          <div class="footer-links">
+            <h4>Redes</h4>
+            <ul>
+              <li><a href="https://instagram.com/casaduo.app" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+              <li><a href="https://tiktok.com/@casaduo.app" target="_blank" rel="noopener noreferrer">TikTok</a></li>
             </ul>
           </div>
         </div>
